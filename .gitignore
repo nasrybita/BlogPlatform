@@ -1,0 +1,67 @@
+# =====================
+# .NET build folders
+# =====================
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+
+# =====================
+# Visual Studio folders and files
+# =====================
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# =====================
+# Logs
+# =====================
+*.log
+logs/
+
+# =====================
+# Environment & sensitive info
+# =====================
+.env
+appsettings.Development.json
+*.secret.json
+
+# =====================
+# Node / Frontend (for later)
+# =====================
+node_modules/
+dist/
+build/
+*.cache
+
+# =====================
+# Uploads / Media
+# =====================
+uploads/
+media/
+
+# =====================
+# Misc temporary files
+# =====================
+*.tmp
+*.temp
+*.swp
+*.bak
+*.old
+Thumbs.db
+.DS_Store
+
+# =====================
+# Coverage / Test files
+# =====================
+coverage/
+*.coverage
+*.testresults/
+
+# =====================
+# Docker (if used)
+# =====================
+docker-compose.override.yml
