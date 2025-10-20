@@ -1,8 +1,8 @@
 # =====================
 # .NET build folders
 # =====================
-bin/
-obj/
+**/bin/
+**/obj/
 *.dll
 *.exe
 *.pdb
@@ -36,6 +36,9 @@ node_modules/
 dist/
 build/
 *.cache
+*.log
+.turbo/
+.parcel-cache/
 
 # =====================
 # Uploads / Media
@@ -65,3 +68,8 @@ coverage/
 # Docker (if used)
 # =====================
 docker-compose.override.yml
+
+# =====================
+# VS Code (if used)
+# =====================
+.vscode/
