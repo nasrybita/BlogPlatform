@@ -61,7 +61,9 @@ namespace BlogPlatform.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<int?>("ParentCommentId")
                         .HasColumnType("int");
@@ -70,7 +72,9 @@ namespace BlogPlatform.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -95,7 +99,9 @@ namespace BlogPlatform.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LikeId"));
 
                     b.Property<DateTime>("LikedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<int>("PostId")
                         .HasColumnType("int");
@@ -126,7 +132,9 @@ namespace BlogPlatform.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("Slug")
                         .IsRequired()
@@ -146,6 +154,11 @@ namespace BlogPlatform.Migrations
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<long>("ViewCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L);
 
                     b.HasKey("PostId");
 
@@ -225,7 +238,9 @@ namespace BlogPlatform.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -238,7 +253,9 @@ namespace BlogPlatform.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("Role")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(2);
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -254,28 +271,6 @@ namespace BlogPlatform.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("BlogPlatform.Models.View", b =>
-                {
-                    b.Property<int>("ViewId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ViewId"));
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<long>("ViewCount")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("ViewId");
-
-                    b.HasIndex("PostId")
-                        .IsUnique();
-
-                    b.ToTable("Views");
                 });
 
             modelBuilder.Entity("BlogPlatform.Models.Comment", b =>
@@ -294,7 +289,7 @@ namespace BlogPlatform.Migrations
                     b.HasOne("BlogPlatform.Models.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ParentComment");
@@ -371,17 +366,6 @@ namespace BlogPlatform.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("BlogPlatform.Models.View", b =>
-                {
-                    b.HasOne("BlogPlatform.Models.Post", "Post")
-                        .WithOne("View")
-                        .HasForeignKey("BlogPlatform.Models.View", "PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-                });
-
             modelBuilder.Entity("BlogPlatform.Models.Category", b =>
                 {
                     b.Navigation("PostCategories");
@@ -399,8 +383,6 @@ namespace BlogPlatform.Migrations
                     b.Navigation("PostCategories");
 
                     b.Navigation("PostTags");
-
-                    b.Navigation("View");
                 });
 
             modelBuilder.Entity("BlogPlatform.Models.Tag", b =>
