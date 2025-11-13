@@ -11,6 +11,19 @@ namespace BlogPlatform.Data.Configurations
             builder.HasKey(l => l.LikeId);
 
 
+            builder.Property(l => l.PostId)
+                .IsRequired();
+
+
+            builder.Property(l => l.UserId)
+                .IsRequired();
+
+
+            builder.Property(l => l.LikedAt)
+                .HasDefaultValueSql("GETUTCDATE()") 
+                .IsRequired();
+
+
             builder.HasIndex(l => new { l.PostId, l.UserId })
                 .IsUnique();
 
