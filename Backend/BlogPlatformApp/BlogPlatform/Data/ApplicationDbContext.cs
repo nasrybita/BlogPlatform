@@ -16,7 +16,6 @@ namespace BlogPlatform.Data
         public DbSet<PostCategory> PostCategories { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<PostTag> PostTags { get; set; }
-        public DbSet<View> Views { get; set; }
         public DbSet<Like> Likes { get; set; }
 
 
