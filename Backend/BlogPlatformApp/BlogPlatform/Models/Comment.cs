@@ -13,10 +13,10 @@ namespace BlogPlatform.Models
         public int PostId { get; set; } 
 
 
-        public int UserId { get; set; }
+        public int UserId { get; set; } 
 
 
-        public int? ParentCommentId { get; set; }
+        public int? ParentCommentId { get; set; } 
 
 
         [Required]
@@ -24,10 +24,10 @@ namespace BlogPlatform.Models
 
 
         [Required]
-        public CommentStatus Status { get; set; } = CommentStatus.Pending;
+        public CommentStatus Status { get; set; } = CommentStatus.Pending; 
 
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow; 
 
 
         // Navigation properties

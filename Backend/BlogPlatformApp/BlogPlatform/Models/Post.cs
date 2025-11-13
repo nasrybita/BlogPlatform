@@ -31,13 +31,13 @@ namespace BlogPlatform.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
+        public long ViewCount { get; set; } = 0;
 
 
         // Navigation properties
         public User? User { get; set; }
         public ICollection<Comment>? Comments { get; set; }
-        public ICollection<PostCategory>? PostCategories { get; set; }
-        public ICollection<PostTag>? PostTags { get; set; }
-        public View? View { get; set; }
+        public ICollection<PostCategory> PostCategories { get; set; } = new List<PostCategory>();
+        public ICollection<PostTag> PostTags { get; set; } = new List<PostTag>();
     }
 }
