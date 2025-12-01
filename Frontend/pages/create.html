@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create New Post</title>
+
+    <!-- Import Custom Styles -->
+    <link rel="stylesheet" href="../assets/css/create.css" />
+
+    <!-- Import Quill Editor Styles -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css"
+    />
+
+    <!-- Import Toastify Styles (for toasted notifications) -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+  </head>
+  <body>
+    <div class="create-page-wrapper">
+      <a href="../index.html" class="back-link">← Back to Home</a>
+
+      <h2>Create New Post</h2>
+
+      <!-------------- Post Title -------------->
+      <label>Title*</label>
+      <input type="text" placeholder="Post title" id="postTitle" />
+      <span class="error-message" id="errorTitle"></span>
+
+      <!-------------- Post Slug -------------->
+      <label>Slug*</label>
+      <input type="text" placeholder="your-post-slug" id="postSlug" />
+      <span class="error-message" id="errorSlug"></span>
+
+      <!-------------- Post Body -------------->
+      <label>Body*</label>
+      <!-- Quill Editor Container -->
+      <div id="postBodyEditor" style="height: 300px; margin-top: 6px"></div>
+      <input type="hidden" id="postBody" />
+      <span class="error-message" id="errorBody"></span>
+
+      <!-------------- Post Categories -------------->
+      <label>Categories</label>
+      <div id="categoriesWrapper" class="input-chip-wrapper">
+        <input
+          type="text"
+          placeholder="Type a category and press Enter"
+          id="postCategoriesInput"
+        />
+      </div>
+      <span class="error-message" id="errorCategories"></span>
+
+      <!-------------- Post Tags -------------->
+      <label>Tags</label>
+      <div id="tagsWrapper" class="input-chip-wrapper">
+        <input
+          type="text"
+          placeholder="Type a tag and press Enter"
+          id="postTagsInput"
+        />
+      </div>
+      <span class="error-message" id="errorTags"></span>
+
+      <!-------------- Submit Button -------------->
+      <button id="submitPostBtn" class="submit-btn">Submit Post</button>
+    </div>
+
+    <!-- Import Quill Editor JS -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+    <!-- Import Toastify JS (for toasted notifications) -->
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
+
+    <!-- Import Custom JS -->
+    <script src="../assets/js/create/main.js" type="module"></script>
+  </body>
+</html>
