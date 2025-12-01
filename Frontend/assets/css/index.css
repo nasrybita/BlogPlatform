@@ -1,0 +1,300 @@
+/* --- Modern Minimal CSS Reset --- */
+
+/* Make box-sizing predictable */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default spacing */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Full-height page */
+html,
+body {
+  height: 100%;
+}
+
+/* Typography baseline */
+body {
+  line-height: 1.5; /* better readability than 1 */
+  -webkit-font-smoothing: antialiased;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Remove default bullets on lists */
+ol,
+ul {
+  list-style: none;
+}
+
+/* Remove quotes on blockquote/q */
+blockquote,
+q {
+  quotes: none;
+}
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+  content: "";
+}
+
+/* Tables behave consistently */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Media elements behave properly */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Form elements inherit font */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Prevent long words from overflowing */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* HTML5 elements block display (mostly for older browsers) */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+/* ---------- BEGINNING OF MY CUTOM CSS ----------- */
+
+/* --- CREATE NEW POST BUTTON --- */
+.create-new-post-btn {
+  display: inline-block;
+  text-decoration: none;
+  background-color: #1b7ea6;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 20px;
+}
+
+.create-new-post-btn:hover {
+  background-color: #29a5d6;
+}
+
+/* --- POSTS SECTION --- */
+.posts-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --- POSTS CONTAINER ---*/
+.posts-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  background-color: #e7eaf0;
+  width: 98%;
+  padding: 20px 0;
+}
+
+/* --- POST CARD --- */
+.post-card {
+  flex: 1 1 90%;
+  max-width: 90%;
+  min-width: 280px;
+  margin: 10px;
+  padding: 20px;
+  background-color: #ffffff;
+  color: #0f2f59;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+}
+
+/* --- POST CARD HEADER ---*/
+.post-card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.post-create-date {
+  font-size: 12px;
+  color: gray;
+}
+
+.post-category {
+  font-size: 12px;
+  color: #0f2f59;
+  background-color: #e7eaf0;
+  padding: 10px;
+  font-weight: 700;
+  border-radius: 20px;
+}
+
+/* --- POST CARD TITLE --- */
+.post-card-title h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 5px;
+}
+
+/* --- POST CARD CONTENT --- */
+.post-card-content p {
+  font-size: 14px;
+  margin-top: 5px;
+  height: 50px;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+}
+
+/* --- POST CARD BUTTONS --- */
+.post-card-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.edit-post-link,
+.delete-post-link {
+  font-size: 13px;
+  margin: 0 5px;
+  justify-content: left;
+}
+
+.edit-delete-links {
+  display: flex;
+  gap: 10px;
+}
+
+.delete-post-link {
+  top: 10px;
+  right: 10px;
+  color: red;
+  cursor: pointer;
+}
+
+.edit-post-link {
+  top: 10px;
+  right: 10px;
+  color: #059862;
+  cursor: pointer;
+}
+
+.see-more-btn {
+  font-size: 14px;
+  width: 140px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  background-color: transparent;
+  transition: 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+  color: #1b7ea6;
+  opacity: 1;
+  font-weight: 500;
+}
+
+.post-card button .icon path {
+  stroke: #1b7ea6;
+}
+
+.post-card button .icon {
+  transform: translateX(0%);
+  transition: 0.2s linear;
+  animation: attention 1.2s linear infinite;
+}
+
+.post-card button:hover::after {
+  visibility: visible;
+  opacity: 1;
+  width: 90%;
+}
+
+.post-card button:hover {
+  letter-spacing: 2px;
+  opacity: 1;
+}
+
+.post-card button:hover > .icon {
+  transform: translateX(30%);
+  animation: none;
+}
+
+@keyframes attention {
+  0% {
+    transform: translateX(0%);
+  }
+
+  50% {
+    transform: translateX(30%);
+  }
+}
+
+/* Smaller Screens */
+@media (min-width: 290px) {
+  .post-card-buttons {
+    padding-top: 30px;
+  }
+}
+
+/* Tablets */
+@media (min-width: 600px) {
+  .post-card {
+    flex: 1 1 45%;
+    max-width: 45%; /* 2 per row */
+  }
+
+  .post-card-buttons {
+    padding-top: 20px;
+  }
+}
+
+/* Laptops / Desktops */
+@media (min-width: 992px) {
+  .post-card {
+    flex: 1 1 30%;
+    max-width: 30%; /* 3 per row */
+  }
+}

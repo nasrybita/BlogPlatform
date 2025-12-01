@@ -1,0 +1,316 @@
+/* --- Modern Minimal CSS Reset --- */
+
+/* Make box-sizing predictable */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default spacing */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Full-height page */
+html,
+body {
+  height: 100%;
+}
+
+/* Typography baseline */
+body {
+  line-height: 1.5; /* better readability than 1 */
+  -webkit-font-smoothing: antialiased;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Remove default bullets on lists */
+ol,
+ul {
+  list-style: none;
+}
+
+/* Remove quotes on blockquote/q */
+blockquote,
+q {
+  quotes: none;
+}
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+  content: "";
+}
+
+/* Tables behave consistently */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Media elements behave properly */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Form elements inherit font */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Prevent long words from overflowing */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* HTML5 elements block display (mostly for older browsers) */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+/* -------------------------- BEGINNING OF MY CUSTOM CSS ------------------------ */
+
+/* --- CREATE PAGE WRAPPER --- */
+.create-page-wrapper {
+  width: 100%;
+  max-width: 100%;
+  margin: 20px auto;
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+/* --- BACK TO HOME LINK --- */
+.back-link {
+  display: inline-block;
+  margin-bottom: 15px;
+  color: #1b7ea6;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.2s ease-in-out;
+}
+
+/* --- FORM TITLE --- */
+.create-page-wrapper > h2 {
+  margin-bottom: 20px;
+  color: #0f2f59;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* --- FORM LABELS --- */
+.create-page-wrapper label {
+  display: block;
+  font-weight: 600;
+  color: #0f2f59;
+  margin-top: 20px;
+}
+
+/* --- FORM INPUTS --- */
+.create-page-wrapper input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border: 1px solid #c8cdd5;
+  background: #f8fafc;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* form inputs when no error (excluding categories/tags inputs) */
+.create-page-wrapper
+  input:focus:not(.input-error):not(#postCategoriesInput):not(#postTagsInput) {
+  border: 2px solid #8fbdd9;
+  background-color: #f8fafc; /* keep same background */
+  outline: none;
+  box-shadow: none;
+}
+
+/* --- FORM INPUTS WITH ERROR --- */
+.input-error {
+  border: 1px solid #d93025 !important;
+  background-color: #fff5f5 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+input.input-error:focus {
+  border: 2px solid #d93025 !important;
+  background-color: #fff5f5 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.input-valid {
+  border: 2px solid #059862 !important;
+  background-color: #f7fff8 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+input.input-valid:focus {
+  border: 2px solid #059862 !important;
+  background-color: #f7fff8 !important;
+}
+
+/* --- QUILL EDITOR CUSTOMIZATION --- */
+#postBodyEditor,
+.ql-toolbar.ql-snow {
+  border: 1px solid #c8cdd5;
+  border-radius: 5px;
+  background: #f8fafc;
+  margin-top: 6px;
+}
+
+/* Quill editor with error */
+#postBodyEditor.input-error {
+  border: 1px solid #d93025 !important;
+}
+
+#postBodyEditor.input-valid {
+  border: 2px solid #059862 !important;
+}
+
+#postBodyEditor.input-error .ql-editor:focus {
+  border: 2px solid #d93025;
+}
+
+/* Quill editor focus without error */
+#postBodyEditor:focus,
+#postBodyEditor.focused {
+  border: 2px solid #8fbdd9;
+  outline: none;
+}
+
+/* --- INPUT CHIP WRAPPER --- */
+.input-chip-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 5px;
+  border: 1px solid #c8cdd5;
+  border-radius: 5px;
+  background: #f8fafc;
+  margin-top: 6px;
+}
+
+.input-chip-wrapper input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 5px;
+  font-size: 14px;
+  min-width: 100px;
+  outline: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  background-color: #e0f0ff;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 13px;
+  cursor: default;
+}
+
+.chip span {
+  margin-left: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.input-chip-wrapper.focused {
+  border: 2px solid #8fbdd9;
+}
+
+.input-chip-wrapper.error {
+  border: 2px solid #d93025;
+}
+
+.input-chip-wrapper.valid {
+  border: 2px solid #059862;
+}
+
+/* --- SUBMIT BUTTON --- */
+.submit-btn {
+  background-color: #1b7ea6;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 25px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background-color 0.2s ease-in-out;
+  box-sizing: border-box;
+}
+
+.submit-btn:hover {
+  background-color: #29a5d6;
+}
+
+.error-message {
+  color: #d93025;
+  font-size: 13px;
+  margin-top: 4px;
+  display: block;
+}
+
+/* --- MEDIUM and LARGE SCREEN OPTIMIZATION --- */
+
+@media (min-width: 600px) {
+  .create-page-wrapper {
+    max-width: 600px;
+    padding: 25px;
+  }
+
+  .create-page-wrapper h2 {
+    font-size: 24px;
+  }
+}
+
+@media (min-width: 900px) {
+  .create-page-wrapper {
+    max-width: 800px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .create-page-wrapper {
+    max-width: 900px;
+  }
+}
