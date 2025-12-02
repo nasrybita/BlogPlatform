@@ -15,6 +15,11 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.slnx.sqlite              
+VSWorkspaceState.json      
+CopilotIndices/            
+FileContentIndex/          
+v17/                       
 
 # =====================
 # Logs
@@ -56,6 +61,7 @@ media/
 *.old
 Thumbs.db
 .DS_Store
+.gitkeep
 
 # =====================
 # Coverage / Test files
