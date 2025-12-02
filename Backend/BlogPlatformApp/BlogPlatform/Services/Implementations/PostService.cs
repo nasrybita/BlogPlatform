@@ -8,7 +8,10 @@ using BlogPlatform.Models;
 using BlogPlatform.Repositories.Interfaces;
 using BlogPlatform.Services.Interfaces;
 using FluentValidation;
+using Ganss.Xss;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using System.Text.RegularExpressions;
 
 namespace BlogPlatform.Services.Implementations
 {
@@ -64,6 +67,19 @@ namespace BlogPlatform.Services.Implementations
 
             // Map DTO to Post entity
             var post = _mapper.Map<Post>(dto);
+
+
+            // Sanitize Quill HTML body
+            var sanitizer = new HtmlSanitizer();
+            post.Body = sanitizer.Sanitize(post.Body);
+
+            // Remove empty <p> tags
+            post.Body = Regex.Replace(
+                post.Body,
+                @"<p>(?:\s|&nbsp;|&#160;)*</p>",
+                string.Empty,
+                RegexOptions.IgnoreCase
+            );
 
 
             // Ensure post slug is valid
@@ -188,6 +204,22 @@ namespace BlogPlatform.Services.Implementations
 
 
             _mapper.Map(dto, existing);
+
+
+
+            // Sanitize updated HTML body (about Quill editor)
+            var sanitizer = new HtmlSanitizer();
+            existing.Body = sanitizer.Sanitize(existing.Body);
+
+            // Remove empty <p> tags
+            existing.Body = Regex.Replace(
+                existing.Body,
+                @"<p>(?:\s|&nbsp;|&#160;)*</p>",
+                string.Empty,
+                RegexOptions.IgnoreCase
+            );
+
+
 
 
             // Ensure slug is URL-friendly if user changed it
