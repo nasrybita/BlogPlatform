@@ -35,7 +35,6 @@ namespace BlogPlatform.Repositories.Implementations
                 .Include(p => p.User)
                 .Include(p => p.PostCategories).ThenInclude(pc => pc.Category)
                 .Include(p => p.PostTags).ThenInclude(pt => pt.Tag)
-                //.Include(p => p.View)
                 .Include(p => p.Comments)
                 .FirstOrDefaultAsync(p => p.PostId == id);
         }
