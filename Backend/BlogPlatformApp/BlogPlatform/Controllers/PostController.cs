@@ -63,10 +63,10 @@ namespace BlogPlatform.Controllers
             var success = await _postService.UpdateAsync(id, dto);
             if (success)
             {
-                return NoContent();
+                return Ok(new { message = "Post updated successfully" });
             }
 
-            return NotFound();
+            return NotFound(new { message = "Post not found" });
         }
 
 
@@ -79,10 +79,10 @@ namespace BlogPlatform.Controllers
             var success = await _postService.DeleteAsync(id);
             if (success)
             {
-                return NoContent();
+                return Ok(new { message = "Post deleted successfully" });
             }
 
-            return NotFound();
+            return NotFound(new { message = "Post not found" });
         }
 
 

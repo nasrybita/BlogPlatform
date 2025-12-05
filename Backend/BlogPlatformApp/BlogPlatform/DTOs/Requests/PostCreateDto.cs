@@ -1,4 +1,6 @@
-﻿namespace BlogPlatform.DTOs.Requests
+﻿using BlogPlatform.Enums;
+
+namespace BlogPlatform.DTOs.Requests
 {
     public class PostCreateDto
     {
@@ -7,6 +9,8 @@
         public string Body {  get; set; } = string.Empty;
         public IEnumerable<string>? Categories { get; set; } = Array.Empty<string>();
         public IEnumerable<string>? Tags { get; set; } = Array.Empty<string>();
+        public PostStatus Status { get; set; } = PostStatus.Draft;
+
 
     }
 }
