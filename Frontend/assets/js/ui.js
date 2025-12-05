@@ -1,4 +1,5 @@
 import { getExcerpt } from "./helpers.js";
+import { deletePostFromAPI } from "./shared-api.js";
 
 // Create a post card element
 export function createPostCard(post) {
@@ -25,7 +26,9 @@ export function createPostCard(post) {
     <!-- POST CARD BUTTONS -->
     <div class="post-card-buttons">
         <div class="edit-delete-links">
-        <a class="edit-post-link" href="edit.html?id=${post.postId}">Edit</a>
+        <a class="edit-post-link" href="pages/edit.html?id=${
+          post.postId
+        }">Edit</a>
         <a class="delete-post-link" href="#" data-id="${post.postId}">Delete</a>
         </div>
         <button class="see-more-btn" onclick="window.location='post.html?slug=${
@@ -67,4 +70,99 @@ export function renderPosts(container, posts) {
 // Show error message in container
 export function showErrorInContainer(container, message) {
   container.innerHTML = `<p>${message}</p>`;
+}
+
+// Create and show delete confirmation modal
+function showDeleteConfirmationModal(postId) {
+  const modalOverlay = document.createElement("div");
+  modalOverlay.classList.add("modal-overlay");
+
+  const modal = document.createElement("div");
+  modal.classList.add("modal");
+  modal.innerHTML = `
+    <div class="modal-content">
+      <h3>Delete Post?</h3>
+      <p>Are you sure you want to delete this post? This action cannot be undone.</p>
+      <div class="modal-buttons">
+        <button class="modal-btn modal-btn-cancel">No, Cancel</button>
+        <button class="modal-btn modal-btn-delete">Yes, Delete</button>
+      </div>
+    </div>
+  `;
+
+  modalOverlay.appendChild(modal);
+  document.body.appendChild(modalOverlay);
+
+  const cancelBtn = modal.querySelector(".modal-btn-cancel");
+  const deleteBtn = modal.querySelector(".modal-btn-delete");
+
+  const closeModal = () => {
+    modalOverlay.remove();
+  };
+
+  cancelBtn.addEventListener("click", closeModal);
+
+  modalOverlay.addEventListener("click", (e) => {
+    if (e.target === modalOverlay) {
+      closeModal();
+    }
+  });
+
+  deleteBtn.addEventListener("click", async () => {
+    deleteBtn.disabled = true;
+    deleteBtn.textContent = "Deleting...";
+
+    try {
+      const response = await deletePostFromAPI(postId);
+      if (response.ok) {
+        closeModal();
+
+        Toastify({
+          text: "Post deleted successfully!",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          style: { background: "#059862" },
+        }).showToast();
+
+        setTimeout(() => location.reload(), 2500);
+      } else {
+        closeModal();
+
+        // Show error toast
+        Toastify({
+          text: "Failed to delete post.",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          close: true,
+          style: { background: "#d93025" },
+        }).showToast();
+      }
+    } catch (err) {
+      console.error(err);
+
+      closeModal();
+
+      Toastify({
+        text: "Unexpected error occurred.",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        close: true,
+        style: { background: "#d93025" },
+      }).showToast();
+    }
+  });
+}
+
+// Setup delete post listener
+export function setupDeletePostListener(container) {
+  container.addEventListener("click", (e) => {
+    if (e.target.classList.contains("delete-post-link")) {
+      e.preventDefault();
+      const postId = e.target.dataset.id;
+      showDeleteConfirmationModal(postId);
+    }
+  });
 }

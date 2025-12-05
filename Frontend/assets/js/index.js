@@ -1,5 +1,9 @@
 import { fetchPosts } from "./api.js";
-import { renderPosts, showErrorInContainer } from "./ui.js";
+import {
+  renderPosts,
+  showErrorInContainer,
+  setupDeletePostListener,
+} from "./ui.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   const container = document.querySelector(".posts-container");
@@ -8,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const posts = await fetchPosts();
       renderPosts(container, posts);
+      setupDeletePostListener(container);
     } catch (err) {
       console.error("Error loading posts:", err);
       showErrorInContainer(container, "Failed to load posts.");
