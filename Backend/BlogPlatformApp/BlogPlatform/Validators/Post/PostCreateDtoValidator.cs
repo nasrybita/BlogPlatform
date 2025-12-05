@@ -1,4 +1,5 @@
 ﻿using BlogPlatform.DTOs.Requests;
+using BlogPlatform.Enums;
 using FluentValidation;
 
 namespace BlogPlatform.Validators.Post
@@ -37,6 +38,11 @@ namespace BlogPlatform.Validators.Post
                     .NotEmpty().WithMessage("Tag name cannot be empty.")
                     .MaximumLength(50).WithMessage("Tag name cannot exceed 50 characters.");
             });
+
+
+            RuleFor(p => p.Status)
+                .Must(s => Enum.IsDefined(typeof(PostStatus), s))
+                .WithMessage("Status must be either Draft or Published.");
         }
     }
 }
