@@ -7,6 +7,7 @@ import {
   validateBody,
   validateCategories,
   validateTags,
+  validateStatus,
 } from "./validators.js";
 import { initializeSubmit } from "./submit.js";
 

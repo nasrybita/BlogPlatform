@@ -7,3 +7,4 @@ export const tagsWrapper = document.getElementById("tagsWrapper");
 export const tagsInput = document.getElementById("postTagsInput");
 export const submitBtn = document.getElementById("submitPostBtn");
 export const bodyEditor = document.getElementById("postBodyEditor");
+export const statusSelect = document.getElementById("postStatus");

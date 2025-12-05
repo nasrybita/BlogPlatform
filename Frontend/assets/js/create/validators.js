@@ -31,6 +31,7 @@ export function applyValid(element, isWrapper = false) {
 export function showError(id, message) {
   const errSpan = document.getElementById(id);
   if (errSpan) errSpan.textContent = message;
+
   if (id === "errorCategories") applyError(categoriesWrapper, true);
   else if (id === "errorTags") applyError(tagsWrapper, true);
   else if (id === "errorBody")
@@ -188,5 +189,23 @@ export function validateTags() {
     }
   }
   applyValid(tagsWrapper, true);
+  return true;
+}
+
+export function validateStatus() {
+  const statusEl = document.getElementById("postStatus");
+  const errorId = "errorStatus";
+  document.getElementById(errorId).textContent = "";
+
+  if (!statusEl) return true; // nothing to validate
+
+  const val = statusEl.value;
+  if (val !== "Draft" && val !== "Published") {
+    showError(errorId, "Invalid status selected.");
+    return false;
+  }
+
+  statusEl.classList.remove("input-error");
+  statusEl.classList.add("input-valid");
   return true;
 }

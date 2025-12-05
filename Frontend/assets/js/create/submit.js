@@ -1,4 +1,4 @@
-import { titleInput, slugInput, submitBtn } from "./dom.js";
+import { titleInput, slugInput, submitBtn, statusSelect } from "./dom.js";
 import { quill } from "./editor.js";
 import { categories, tags } from "./chips.js";
 import {
@@ -9,8 +9,9 @@ import {
   validateBody,
   validateCategories,
   validateTags,
+  validateStatus,
 } from "./validators.js";
-import { submitPostToAPI } from "./api.js";
+import { submitPostToAPI } from "../shared-api.js";
 
 // -------------------- Submit Post --------------------
 export function initializeSubmit() {
@@ -22,13 +23,16 @@ export function initializeSubmit() {
       body: quill.root.innerHTML.trim(),
       categories: [...categories],
       tags: [...tags],
+      status: statusSelect ? statusSelect.value : "draft",
     };
     const invalid =
       !validateTitle() |
       !validateSlug() |
       !validateBody() |
       !validateCategories() |
-      !validateTags();
+      !validateTags() |
+      !validateStatus();
+
     if (invalid) return;
     try {
       const { res, data } = await submitPostToAPI(dto);

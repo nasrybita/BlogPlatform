@@ -26,6 +26,7 @@ export function renderChips(wrapper, array, input) {
     chip.appendChild(remove);
     wrapper.appendChild(chip);
   });
+
   wrapper.appendChild(input);
 }
 
