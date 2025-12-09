@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
   async function loadPosts() {
     try {
       const posts = await fetchPosts();
-      renderPosts(container, posts);
+      renderPosts(container, posts, "Published");
       setupDeletePostListener(container);
     } catch (err) {
       console.error("Error loading posts:", err);
