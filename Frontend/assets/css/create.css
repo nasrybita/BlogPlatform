@@ -119,6 +119,10 @@ section {
   transition: color 0.2s ease-in-out;
 }
 
+.back-link:hover {
+  color: #29a5d6;
+}
+
 /* --- FORM TITLE --- */
 .create-page-wrapper > h2 {
   margin-bottom: 20px;

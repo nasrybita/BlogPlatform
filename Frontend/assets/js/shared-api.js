@@ -35,3 +35,44 @@ export async function deletePostFromAPI(postId) {
   });
   return res;
 }
+
+// Publish a post
+export async function publishPostToAPI(postId) {
+  const res = await fetch(`https://localhost:7011/api/Post/${postId}/publish`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+  });
+  if (res.status === 204) {
+    return { ok: true, status: 204 };
+  }
+
+  // For other responses, try to parse JSON
+  try {
+    const data = await res.json();
+    return { ok: res.ok, status: res.status, data };
+  } catch (e) {
+    return { ok: res.ok, status: res.status };
+  }
+}
+
+// Unpublish a post (convert to draft)
+export async function unpublishPostToAPI(postId) {
+  const res = await fetch(
+    `https://localhost:7011/api/Post/${postId}/unpublish`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+  if (res.status === 204) {
+    return { ok: true, status: 204 };
+  }
+
+  // For other responses, try to parse JSON
+  try {
+    const data = await res.json();
+    return { ok: res.ok, status: res.status, data };
+  } catch (e) {
+    return { ok: res.ok, status: res.status };
+  }
+}

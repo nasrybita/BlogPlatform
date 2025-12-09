@@ -11,7 +11,17 @@ import {
   validateTags,
   validateStatus,
 } from "./validators.js";
-import { submitPostToAPI } from "../shared-api.js";
+import { submitPostToAPI, publishPostToAPI } from "../shared-api.js";
+
+// -------------------- Update Button Text Based on Status --------------------
+export function updateButtonText() {
+  const status = statusSelect.value;
+  if (status === "Published") {
+    submitBtn.textContent = "Publish Post";
+  } else {
+    submitBtn.textContent = "Draft Post";
+  }
+}
 
 // -------------------- Submit Post --------------------
 export function initializeSubmit() {
@@ -23,8 +33,9 @@ export function initializeSubmit() {
       body: quill.root.innerHTML.trim(),
       categories: [...categories],
       tags: [...tags],
-      status: statusSelect ? statusSelect.value : "draft",
+      status: "Draft",
     };
+
     const invalid =
       !validateTitle() |
       !validateSlug() |
@@ -34,8 +45,11 @@ export function initializeSubmit() {
       !validateStatus();
 
     if (invalid) return;
+
     try {
+      // Step 1: Create post as draft
       const { res, data } = await submitPostToAPI(dto);
+
       if (!res.ok) {
         if (data.errors) {
           Object.entries(data.errors).forEach(([field, messages]) =>
@@ -44,14 +58,47 @@ export function initializeSubmit() {
         }
         return;
       }
-      Toastify({
-        text: "Post created successfully!",
-        duration: 5000,
-        gravity: "top",
-        position: "right",
-        close: true,
-        style: { background: "#059862" },
-      }).showToast();
+
+      // Step 2: If user selected "Published" (publish the post)
+      const postId = data.postId;
+      const userSelectedStatus = statusSelect.value;
+
+      if (userSelectedStatus === "Published") {
+        const publishRes = await publishPostToAPI(postId);
+
+        if (!publishRes.ok) {
+          Toastify({
+            text: "Post Created but Failed to Publish. Please publish it manually.",
+            duration: 5000,
+            gravity: "top",
+            position: "right",
+            close: true,
+            style: { background: "#ff9800" },
+          }).showToast();
+          setTimeout(() => (window.location.href = "../index.html"), 3000);
+          return;
+        }
+
+        Toastify({
+          text: "Post Published Successfully!",
+          duration: 5000,
+          gravity: "top",
+          position: "right",
+          close: true,
+          style: { background: "#059862" },
+        }).showToast();
+      } else {
+        // Success: Post saved as draft
+        Toastify({
+          text: "Post Saved Successfully!",
+          duration: 5000,
+          gravity: "top",
+          position: "right",
+          close: true,
+          style: { background: "#059862" },
+        }).showToast();
+      }
+
       setTimeout(() => (window.location.href = "../index.html"), 3000);
     } catch (err) {
       console.error(err);
@@ -60,6 +107,7 @@ export function initializeSubmit() {
         duration: 5000,
         gravity: "top",
         position: "right",
+        close: true,
         style: { background: "#d93025" },
       }).showToast();
     }
