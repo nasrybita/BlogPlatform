@@ -21,7 +21,7 @@ body {
 
 /* Typography baseline */
 body {
-  line-height: 1.5; /* better readability than 1 */
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   font-family: "Poppins", sans-serif;
 }
@@ -37,6 +37,7 @@ blockquote,
 q {
   quotes: none;
 }
+
 blockquote::before,
 blockquote::after,
 q::before,
@@ -94,51 +95,39 @@ section {
   display: block;
 }
 
-/* ---------- BEGINNING OF MY CUTOM CSS ----------- */
+/* ---------- DRAFTS PAGE CUSTOM STYLES ----------- */
 
-/* --- HEADER BUTTONS WRAPPER --- */
-.header-buttons {
+/* --- DRAFTS HEADER --- */
+.drafts-header {
   display: flex;
-  gap: 10px;
-  margin: 20px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* --- CREATE NEW POST BUTTON --- */
-.create-new-post-btn {
+.page-title {
+  color: #0f2f59;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.back-home-link {
   display: inline-block;
+  color: #1b7ea6;
   text-decoration: none;
-  background-color: #1b7ea6;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 15px;
+  transition: color 0.2s ease-in-out;
 }
 
-.create-new-post-btn:hover {
-  background-color: #29a5d6;
+.back-home-link:hover {
+  color: #29a5d6;
 }
 
-/* --- DRAFTS BUTTON (variant) --- */
-.drafts-btn {
-  background-color: #f2622e;
-
-  display: inline-block;
-  text-decoration: none;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.drafts-btn:hover {
-  background-color: #ff7948;
-}
-
-/* --- POSTS SECTION --- */
+/* --- POSTS SECTION (reuse from index.css) --- */
 .posts-section {
   display: flex;
   flex-direction: row;
@@ -146,7 +135,7 @@ section {
   align-items: center;
 }
 
-/* --- POSTS CONTAINER ---*/
+/* --- POSTS CONTAINER --- */
 .posts-container {
   display: flex;
   flex-wrap: wrap;
@@ -157,7 +146,7 @@ section {
   padding: 20px 0;
 }
 
-/* --- POST CARD --- */
+/* --- POST CARD (reuse from index.css) --- */
 .post-card {
   flex: 1 1 90%;
   max-width: 90%;
@@ -170,7 +159,6 @@ section {
   border-radius: 5px;
 }
 
-/* --- POST CARD HEADER ---*/
 .post-card-header {
   display: flex;
   flex-direction: row;
@@ -192,22 +180,20 @@ section {
   border-radius: 20px;
 }
 
-/* --- POST CARD TITLE --- */
 .post-card-title h3 {
   font-size: 18px;
   font-weight: 700;
   margin-top: 5px;
 }
 
-/* --- POST CARD CONTENT --- */
 .post-card-content p {
   font-size: 14px;
   margin-top: 5px;
   height: 50px;
   line-height: 1.5;
+  text-overflow: ellipsis;
 }
 
-/* --- POST CARD BUTTONS --- */
 .post-card-buttons {
   display: flex;
   justify-content: space-between;
@@ -321,7 +307,7 @@ section {
 
 .modal {
   background-color: #ffffff;
-  border-radius: 5px;
+  border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   max-width: 400px;
   width: 90%;
@@ -394,11 +380,22 @@ section {
   background-color: #b82820;
 }
 
-/* --- EMPTY POSTS MESSAGE --- */
-.empty-posts-message {
+/* --- EMPTY MESSAGE --- */
+.empty-message {
   text-align: center;
-  padding: 40px;
+  padding: 40px 20px;
   color: #5a6670;
+  font-size: 16px;
+}
+
+.empty-message a {
+  color: #1b7ea6;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.empty-message a:hover {
+  color: #0f7ea6;
 }
 
 /* Smaller Screens */
@@ -412,11 +409,15 @@ section {
 @media (min-width: 600px) {
   .post-card {
     flex: 1 1 45%;
-    max-width: 45%; /* 2 per row */
+    max-width: 45%;
   }
 
   .post-card-buttons {
     padding-top: 20px;
+  }
+
+  .drafts-header {
+    flex-direction: row;
   }
 }
 
@@ -424,6 +425,6 @@ section {
 @media (min-width: 992px) {
   .post-card {
     flex: 1 1 30%;
-    max-width: 30%; /* 3 per row */
+    max-width: 30%;
   }
 }

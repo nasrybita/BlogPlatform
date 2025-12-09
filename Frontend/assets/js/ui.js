@@ -1,7 +1,7 @@
 import { getExcerpt } from "./helpers.js";
 import { deletePostFromAPI } from "./shared-api.js";
 
-// Create a post card element
+// ---------- Create a post card element ----------
 export function createPostCard(post) {
   const card = document.createElement("div");
   card.classList.add("post-card");
@@ -26,12 +26,12 @@ export function createPostCard(post) {
     <!-- POST CARD BUTTONS -->
     <div class="post-card-buttons">
         <div class="edit-delete-links">
-        <a class="edit-post-link" href="pages/edit.html?id=${
+        <a class="edit-post-link" href="/pages/edit.html?id=${
           post.postId
         }">Edit</a>
         <a class="delete-post-link" href="#" data-id="${post.postId}">Delete</a>
         </div>
-        <button class="see-more-btn" onclick="window.location='post.html?slug=${
+        <button class="see-more-btn" onclick="window.location='/post.html?slug=${
           post.slug
         }'">
         See more
@@ -58,21 +58,39 @@ export function createPostCard(post) {
   return card;
 }
 
-// Render posts to container
-export function renderPosts(container, posts) {
+// --------------- Render posts to container ---------------
+// Filter posts by status (Published/Draft)
+export function renderPosts(container, posts, filterByStatus = "Published") {
   container.innerHTML = "";
-  posts.forEach((post) => {
+
+  // Filter posts based on status
+  const filteredPosts = filterByStatus
+    ? posts.filter((post) => post.status === filterByStatus)
+    : posts;
+
+  if (filteredPosts.length === 0) {
+    const message =
+      filterByStatus === "Published"
+        ? "No published posts yet."
+        : filterByStatus === "Draft"
+        ? "No draft posts yet."
+        : "No posts found.";
+    container.innerHTML = `<p class="empty-posts-message">${message}</p>`;
+    return;
+  }
+
+  filteredPosts.forEach((post) => {
     const card = createPostCard(post);
     container.appendChild(card);
   });
 }
 
-// Show error message in container
+// -------------- Show error message in container --------------
 export function showErrorInContainer(container, message) {
   container.innerHTML = `<p>${message}</p>`;
 }
 
-// Create and show delete confirmation modal
+// -------------- Create and show delete confirmation modal --------------
 function showDeleteConfirmationModal(postId) {
   const modalOverlay = document.createElement("div");
   modalOverlay.classList.add("modal-overlay");
@@ -156,7 +174,7 @@ function showDeleteConfirmationModal(postId) {
   });
 }
 
-// Setup delete post listener
+// ------------- Setup delete post listener -------------
 export function setupDeletePostListener(container) {
   container.addEventListener("click", (e) => {
     if (e.target.classList.contains("delete-post-link")) {

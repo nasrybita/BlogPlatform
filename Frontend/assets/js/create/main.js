@@ -1,4 +1,10 @@
-import { titleInput, slugInput, categoriesInput, tagsInput } from "./dom.js";
+import {
+  titleInput,
+  slugInput,
+  categoriesInput,
+  tagsInput,
+  statusSelect,
+} from "./dom.js";
 import { quill } from "./editor.js";
 import { initializeChipInputs } from "./chips.js";
 import {
@@ -9,16 +15,23 @@ import {
   validateTags,
   validateStatus,
 } from "./validators.js";
-import { initializeSubmit } from "./submit.js";
+import { initializeSubmit, updateButtonText } from "./submit.js";
 
 // -------------------- Initialize Everything --------------------
 // Initialize chip inputs with validation functions
 initializeChipInputs(validateCategories, validateTags);
 
+// -------------------- Set Initial Button Text --------------------
+updateButtonText();
+
 // -------------------- Live Validation --------------------
 titleInput.addEventListener("input", validateTitle);
 slugInput.addEventListener("input", validateSlug);
+
 quill.on("text-change", validateBody);
+
+statusSelect.addEventListener("change", updateButtonText);
+
 categoriesInput.addEventListener("input", () => {
   if (categoriesInput.value.trim())
     (document.getElementById("errorCategories").textContent = ""),

@@ -5,6 +5,7 @@ import {
   tagsInput,
   categoriesWrapper,
   tagsWrapper,
+  statusSelect,
 } from "./dom.js";
 import { quill } from "./editor.js";
 import {
@@ -21,17 +22,23 @@ import {
   validateTags,
 } from "../create/validators.js";
 import { fetchPostById } from "../shared-api.js";
-import { initializeSubmit } from "./submit.js";
+import {
+  initializeSubmit,
+  updateEditButtonText,
+  setOriginalPost,
+} from "./submit.js";
 
 // -------------------- Get Post ID from URL --------------------
 const urlParams = new URLSearchParams(window.location.search);
 const postId = urlParams.get("id");
 
 // -------------------- Load Post Data for Editing --------------------
-
 async function loadPostForEditing() {
   try {
     const post = await fetchPostById(postId);
+
+    // STORE ORIGINAL POST DATA - THIS IS KEY FOR PROBLEM #1, #2, #3
+    setOriginalPost(post);
 
     // Populate form fields with existing post data
     titleInput.value = post.title;
@@ -53,10 +60,12 @@ async function loadPostForEditing() {
     }
 
     // Set status select to the post's current status
-    const statusEl = document.getElementById("postStatus");
-    if (statusEl && post.status) {
-      statusEl.value = post.status;
+    if (statusSelect && post.status) {
+      statusSelect.value = post.status;
     }
+
+    // Update button text based on loaded status
+    updateEditButtonText();
   } catch (err) {
     console.error("Error loading post:", err);
     Toastify({
@@ -81,12 +90,17 @@ document.addEventListener("DOMContentLoaded", async function () {
   // -------------------- Live Validation --------------------
   titleInput.addEventListener("input", validateTitle);
   slugInput.addEventListener("input", validateSlug);
+
   quill.on("text-change", validateBody);
+
+  statusSelect.addEventListener("change", updateEditButtonText);
+
   categoriesInput.addEventListener("input", () => {
     if (categoriesInput.value.trim())
       (document.getElementById("errorCategories").textContent = ""),
         document.getElementById("categoriesWrapper").classList.remove("error");
   });
+
   tagsInput.addEventListener("input", () => {
     if (tagsInput.value.trim())
       (document.getElementById("errorTags").textContent = ""),

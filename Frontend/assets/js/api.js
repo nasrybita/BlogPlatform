@@ -7,3 +7,8 @@ export async function fetchPosts() {
   return await response.json();
 }
 
+// Fetch all draft posts
+export async function fetchDraftPosts() {
+  const response = await fetch(`${API_BASE_URL}/DraftPost`);
+  return await response.json();
+}
