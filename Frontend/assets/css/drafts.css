@@ -1,0 +1,430 @@
+/* --- Modern Minimal CSS Reset --- */
+
+/* Make box-sizing predictable */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default spacing */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Full-height page */
+html,
+body {
+  height: 100%;
+}
+
+/* Typography baseline */
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Remove default bullets on lists */
+ol,
+ul {
+  list-style: none;
+}
+
+/* Remove quotes on blockquote/q */
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+  content: "";
+}
+
+/* Tables behave consistently */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Media elements behave properly */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Form elements inherit font */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Prevent long words from overflowing */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* HTML5 elements block display (mostly for older browsers) */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+/* ---------- DRAFTS PAGE CUSTOM STYLES ----------- */
+
+/* --- DRAFTS HEADER --- */
+.drafts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.page-title {
+  color: #0f2f59;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.back-home-link {
+  display: inline-block;
+  color: #1b7ea6;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  transition: color 0.2s ease-in-out;
+}
+
+.back-home-link:hover {
+  color: #29a5d6;
+}
+
+/* --- POSTS SECTION (reuse from index.css) --- */
+.posts-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --- POSTS CONTAINER --- */
+.posts-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  background-color: #e7eaf0;
+  width: 98%;
+  padding: 20px 0;
+}
+
+/* --- POST CARD (reuse from index.css) --- */
+.post-card {
+  flex: 1 1 90%;
+  max-width: 90%;
+  min-width: 280px;
+  margin: 10px;
+  padding: 20px;
+  background-color: #ffffff;
+  color: #0f2f59;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+}
+
+.post-card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.post-create-date {
+  font-size: 12px;
+  color: gray;
+}
+
+.post-category {
+  font-size: 12px;
+  color: #0f2f59;
+  background-color: #e7eaf0;
+  padding: 10px;
+  font-weight: 700;
+  border-radius: 20px;
+}
+
+.post-card-title h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 5px;
+}
+
+.post-card-content p {
+  font-size: 14px;
+  margin-top: 5px;
+  height: 50px;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+}
+
+.post-card-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.edit-post-link,
+.delete-post-link {
+  font-size: 13px;
+  margin: 0 5px;
+  justify-content: left;
+}
+
+.edit-delete-links {
+  display: flex;
+  gap: 10px;
+}
+
+.delete-post-link {
+  top: 10px;
+  right: 10px;
+  color: red;
+  cursor: pointer;
+}
+
+.edit-post-link {
+  top: 10px;
+  right: 10px;
+  color: #059862;
+  cursor: pointer;
+}
+
+.see-more-btn {
+  font-size: 14px;
+  width: 140px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  background-color: transparent;
+  transition: 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+  color: #1b7ea6;
+  opacity: 1;
+  font-weight: 500;
+}
+
+.post-card button .icon path {
+  stroke: #1b7ea6;
+}
+
+.post-card button .icon {
+  transform: translateX(0%);
+  transition: 0.2s linear;
+  animation: attention 1.2s linear infinite;
+}
+
+.post-card button:hover::after {
+  visibility: visible;
+  opacity: 1;
+  width: 90%;
+}
+
+.post-card button:hover {
+  letter-spacing: 2px;
+  opacity: 1;
+}
+
+.post-card button:hover > .icon {
+  transform: translateX(30%);
+  animation: none;
+}
+
+@keyframes attention {
+  0% {
+    transform: translateX(0%);
+  }
+
+  50% {
+    transform: translateX(30%);
+  }
+}
+
+/* --- DELETE CONFIRMATION MODAL --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+  width: 90%;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  padding: 30px;
+  text-align: center;
+}
+
+.modal-content h3 {
+  color: #0f2f59;
+  font-size: 20px;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.modal-content p {
+  color: #5a6670;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.modal-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  flex: 1;
+  max-width: 150px;
+}
+
+.modal-btn-cancel {
+  background-color: #e7eaf0;
+  color: #0f2f59;
+}
+
+.modal-btn-cancel:hover {
+  background-color: #d0d5e0;
+}
+
+.modal-btn-delete {
+  background-color: #d93025;
+  color: white;
+}
+
+.modal-btn-delete:hover {
+  background-color: #b82820;
+}
+
+/* --- EMPTY MESSAGE --- */
+.empty-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: #5a6670;
+  font-size: 16px;
+}
+
+.empty-message a {
+  color: #1b7ea6;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.empty-message a:hover {
+  color: #0f7ea6;
+}
+
+/* Smaller Screens */
+@media (min-width: 290px) {
+  .post-card-buttons {
+    padding-top: 30px;
+  }
+}
+
+/* Tablets */
+@media (min-width: 600px) {
+  .post-card {
+    flex: 1 1 45%;
+    max-width: 45%;
+  }
+
+  .post-card-buttons {
+    padding-top: 20px;
+  }
+
+  .drafts-header {
+    flex-direction: row;
+  }
+}
+
+/* Laptops / Desktops */
+@media (min-width: 992px) {
+  .post-card {
+    flex: 1 1 30%;
+    max-width: 30%;
+  }
+}
