@@ -17,12 +17,15 @@ export function renderChips(wrapper, array, input) {
     const chip = document.createElement("div");
     chip.className = "chip";
     chip.textContent = item;
+
     const remove = document.createElement("span");
     remove.innerHTML = "&times;";
+
     remove.addEventListener("click", () => {
       array.splice(index, 1);
       renderChips(wrapper, array, input);
     });
+    
     chip.appendChild(remove);
     wrapper.appendChild(chip);
   });
