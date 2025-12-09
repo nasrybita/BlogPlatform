@@ -14,6 +14,7 @@ namespace BlogPlatform.Services.Interfaces
         Task<bool> PublishAsync(int id);
         Task<bool> UnpublishAsync(int id);
         Task<bool> IncrementViewCountAsync(int postId);
+        Task<IEnumerable<PostResponseDto>> GetAllDraftsAsync();
 
     }
 }

@@ -94,6 +94,9 @@ namespace BlogPlatform.Services.Implementations
             post.UserId = null;
 
 
+            //Always set status to Draft when creating
+            post.Status = PostStatus.Draft;
+
 
             // Collect all validation errors
             var allErrors = new List<FluentValidation.Results.ValidationFailure>();
@@ -356,11 +359,6 @@ namespace BlogPlatform.Services.Implementations
                 return false;
             }
 
-            // Prevent publishing twice
-            if (post.Status == PostStatus.Published)
-            {
-                return false;
-            }
 
             post.Status = PostStatus.Published;
             post.UpdatedAt = DateTime.UtcNow;
@@ -378,11 +376,6 @@ namespace BlogPlatform.Services.Implementations
                 return false;
             }
 
-            // Prevent unpublishing twice (already a draft)
-            if (post.Status == PostStatus.Draft)
-            {
-                return false;
-            }
 
             post.Status = PostStatus.Draft;
             post.UpdatedAt = DateTime.UtcNow;
@@ -404,6 +397,16 @@ namespace BlogPlatform.Services.Implementations
             post.ViewCount += 1;
             await _postRepository.UpdateAsync(post);
             return true;
+        }
+
+
+
+
+        public async Task<IEnumerable<PostResponseDto>> GetAllDraftsAsync()
+        {
+            var posts = await _postRepository.GetAllAsync();
+            var draftPosts = posts.Where(p => p.Status == PostStatus.Draft);
+            return _mapper.Map<IEnumerable<PostResponseDto>>(draftPosts);
         }
 
 
