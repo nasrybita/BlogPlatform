@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post Preview</title>
+
+    <!-- Import Custom Styles -->
+    <link rel="stylesheet" href="../assets/css/post-preview.css" />
+
+    <!-- Import Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Import Toastify Styles -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+  </head>
+  <body>
+    <div class="post-preview-wrapper">
+      <!-- Back to Home Link -->
+      <a class="back-link" href="../index.html">← Back to Home</a>
+
+      <!-- Post Container -->
+      <article class="post-container">
+        <!-- Post Header -->
+        <div class="post-header">
+          <h1 id="postTitle" class="post-title"></h1>
+          <div class="post-meta">
+            <span id="postStatus" class="post-status"></span>
+            <span id="postUpdatedAt" class="post-updated-date"></span>
+          </div>
+        </div>
+
+        <!-- Post Body -->
+        <div id="postBody" class="post-body"></div>
+
+        <!-- Post Footer -->
+        <div class="post-footer">
+          <!-- Categories -->
+          <div class="post-categories">
+            <strong>Categories:</strong>
+            <div id="categoriesList" class="tags-list"></div>
+          </div>
+
+          <!-- Tags -->
+          <div class="post-tags">
+            <strong>Tags:</strong>
+            <div id="tagsList" class="tags-list"></div>
+          </div>
+
+          <!-- View Count (Only for Published Posts) -->
+          <div
+            id="viewCountContainer"
+            class="post-view-count"
+            style="display: none"
+          >
+            <strong>Views:</strong>
+            <span id="postViewCount"></span>
+          </div>
+        </div>
+
+        <!-- Edit/Delete Buttons -->
+        <div class="post-actions">
+          <a id="editBtn" href="#" class="btn btn-edit">Edit Post</a>
+          <button id="deleteBtn" class="btn btn-delete">Delete Post</button>
+        </div>
+      </article>
+
+      <!-- Loading Spinner -->
+      <div id="loadingSpinner" class="loading-spinner" style="display: none">
+        <p>Loading post...</p>
+      </div>
+
+      <!-- Error Message -->
+      <div id="errorContainer" class="error-container" style="display: none">
+        <p id="errorMessage"></p>
+      </div>
+    </div>
+
+    <!-- Import Toastify JS -->
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
+
+    <!-- Import Custom JS -->
+    <script src="../assets/js/post-preview.js" type="module"></script>
+  </body>
+</html>
