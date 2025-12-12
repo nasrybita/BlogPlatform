@@ -76,3 +76,28 @@ export async function unpublishPostToAPI(postId) {
     return { ok: res.ok, status: res.status };
   }
 }
+
+// Fetch a single post by slug (for post preview page)
+export async function fetchPostBySlug(slug) {
+  try {
+    const res = await fetch("https://localhost:7011/api/Post");
+    const posts = await res.json();
+
+    const post = posts.find((p) => p.slug === slug);
+
+    if (!post) {
+      throw new Error(`Post with slug '${slug}' not found`);
+    }
+
+    // we need to fetch post by ID here to increment view count
+    const detailedRes = await fetch(
+      `https://localhost:7011/api/Post/${post.postId}`
+    );
+    const detailedPost = await detailedRes.json();
+
+    return detailedPost;
+  } catch (error) {
+    console.error("Error fetching post by slug:", error);
+    throw error;
+  }
+}
