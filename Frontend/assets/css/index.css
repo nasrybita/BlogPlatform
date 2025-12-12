@@ -27,10 +27,10 @@ body {
 }
 
 /* Remove default bullets on lists */
-ol,
+/* ol,
 ul {
   list-style: none;
-}
+} */
 
 /* Remove quotes on blockquote/q */
 blockquote,

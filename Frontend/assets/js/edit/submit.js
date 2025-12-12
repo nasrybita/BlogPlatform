@@ -195,8 +195,21 @@ export function initializeSubmit(postId) {
         }
       }
 
-      // Step 3: If only fields were updated (no status change), don't show toast
-      // Just redirect immediately
+      // Step 3: If only fields were updated (no status change)
+      if (!statusChanged) {
+        Toastify({
+          text: "Post updated successfully!",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          style: { background: "#059862" },
+        }).showToast();
+
+        setTimeout(() => {
+          window.location.href = "../index.html";
+        }, 3000);
+        return;
+      }
       window.location.href = "../index.html";
     } catch (err) {
       console.error("[SUBMIT] Error:", err);

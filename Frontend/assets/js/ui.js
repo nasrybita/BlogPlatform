@@ -31,7 +31,7 @@ export function createPostCard(post) {
         }">Edit</a>
         <a class="delete-post-link" href="#" data-id="${post.postId}">Delete</a>
         </div>
-        <button class="see-more-btn" onclick="window.location='/post.html?slug=${
+        <button class="see-more-btn" onclick="window.location='/pages/post.html?slug=${
           post.slug
         }'">
         See more
