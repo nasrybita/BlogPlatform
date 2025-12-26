@@ -8,3 +8,14 @@ export const tagsInput = document.getElementById("postTagsInput");
 export const submitBtn = document.getElementById("submitPostBtn");
 export const bodyEditor = document.getElementById("postBodyEditor");
 export const statusSelect = document.getElementById("postStatus");
+export const featuredImageInput = document.getElementById("featuredImageInput");
+export const featuredImagePreview = document.getElementById(
+  "featuredImagePreview"
+);
+export const featuredImagePreviewContainer = document.getElementById(
+  "featuredImagePreviewContainer"
+);
+export const errorFeaturedImage = document.getElementById("errorFeaturedImage");
+export const removeFeaturedImageBtn = document.getElementById(
+  "removeFeaturedImageBtn"
+);

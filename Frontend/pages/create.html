@@ -40,9 +40,27 @@
       <!-------------- Post Body -------------->
       <label>Body*</label>
       <!-- Quill Editor Container -->
-      <div id="postBodyEditor" style="height: 300px; margin-top: 6px"></div>
+      <div id="postBodyEditor"></div>
       <input type="hidden" id="postBody" />
       <span class="error-message" id="errorBody"></span>
+
+      <!-------------- Featured Image -------------->
+      <label>Featured Image </label>
+      <div class="featured-image-wrapper">
+        <input
+          type="file"
+          id="featuredImageInput"
+          accept=".jpg,.jpeg,image/jpeg"
+        />
+        <div class="featured-image-preview" id="featuredImagePreviewContainer">
+          <img
+            id="featuredImagePreview"
+            alt="Featured Image Preview"
+            style="display: none"
+          />
+        </div>
+      </div>
+      <span class="error-message" id="errorFeaturedImage"></span>
 
       <!-------------- Post Categories -------------->
       <label>Categories</label>

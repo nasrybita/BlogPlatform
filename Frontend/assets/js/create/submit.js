@@ -1,4 +1,11 @@
-import { titleInput, slugInput, submitBtn, statusSelect } from "./dom.js";
+import {
+  titleInput,
+  slugInput,
+  submitBtn,
+  statusSelect,
+  featuredImageInput,
+  errorFeaturedImage,
+} from "./dom.js";
 import { quill } from "./editor.js";
 import { categories, tags } from "./chips.js";
 import {
@@ -11,7 +18,7 @@ import {
   validateTags,
   validateStatus,
 } from "./validators.js";
-import { submitPostToAPI, publishPostToAPI } from "../shared-api.js";
+import { submitPostFormToAPI, publishPostToAPI } from "../api.js";
 
 // -------------------- Update Button Text Based on Status --------------------
 export function updateButtonText() {
@@ -27,15 +34,6 @@ export function updateButtonText() {
 export function initializeSubmit() {
   submitBtn.addEventListener("click", async () => {
     clearErrors();
-    const dto = {
-      title: titleInput.value.trim(),
-      slug: slugInput.value.trim(),
-      body: quill.root.innerHTML.trim(),
-      categories: [...categories],
-      tags: [...tags],
-      status: "Draft",
-    };
-
     const invalid =
       !validateTitle() |
       !validateSlug() |
@@ -47,8 +45,22 @@ export function initializeSubmit() {
     if (invalid) return;
 
     try {
+      // Build FormData for multipart/form-data
+      const formData = new FormData();
+      formData.append("Title", titleInput.value.trim());
+      formData.append("Slug", slugInput.value.trim());
+      formData.append("Body", quill.root.innerHTML.trim());
+      [...categories].forEach((cat) => formData.append("Categories", cat));
+      [...tags].forEach((tag) => formData.append("Tags", tag));
+      formData.append("Status", "Draft");
+
+      // Attach featured image if selected
+      if (featuredImageInput.files[0]) {
+        formData.append("featuredImage", featuredImageInput.files[0]);
+      }
+
       // Step 1: Create post as draft
-      const { res, data } = await submitPostToAPI(dto);
+      const { res, data } = await submitPostFormToAPI(formData);
 
       if (!res.ok) {
         if (data.errors) {

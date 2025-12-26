@@ -4,6 +4,10 @@ import {
   categoriesInput,
   tagsInput,
   statusSelect,
+  featuredImageInput,
+  featuredImagePreview,
+  featuredImagePreviewContainer,
+  errorFeaturedImage,
 } from "./dom.js";
 import { quill } from "./editor.js";
 import { initializeChipInputs } from "./chips.js";
@@ -41,6 +45,42 @@ tagsInput.addEventListener("input", () => {
   if (tagsInput.value.trim())
     (document.getElementById("errorTags").textContent = ""),
       document.getElementById("tagsWrapper").classList.remove("error");
+});
+
+// Featured Image Preview 
+featuredImageInput.addEventListener("change", () => {
+  errorFeaturedImage.textContent = "";
+
+  const file = featuredImageInput.files[0];
+  if (!file) {
+    featuredImagePreview.style.display = "none";
+    return;
+  }
+
+  const isJpeg =
+    file.type === "image/jpeg" ||
+    file.type === "image/jpg" ||
+    file.name.toLowerCase().endsWith(".jpg") ||
+    file.name.toLowerCase().endsWith(".jpeg");
+
+  if (!isJpeg) {
+    featuredImageInput.value = "";
+    featuredImagePreview.style.display = "none";
+    errorFeaturedImage.textContent = "Only JPEG/JPG images are allowed.";
+    return;
+  }
+
+  const maxSizeBytes = 1 * 1024 * 1024; // 1 MB
+  if (file.size > maxSizeBytes) {
+    featuredImageInput.value = "";
+    featuredImagePreview.style.display = "none";
+    errorFeaturedImage.textContent = "Image must be smaller than 1 MB.";
+    return;
+  }
+
+  const url = URL.createObjectURL(file);
+  featuredImagePreview.src = url;
+  featuredImagePreview.style.display = "block";
 });
 
 // -------------------- Initialize Submit Handler --------------------

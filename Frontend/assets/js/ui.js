@@ -1,11 +1,18 @@
 import { getExcerpt } from "./helpers.js";
-import { deletePostFromAPI } from "./shared-api.js";
+import { deletePostFromAPI } from "./api.js";
 
 // ---------- Create a post card element ----------
 export function createPostCard(post) {
   const card = document.createElement("div");
   card.classList.add("post-card");
   card.innerHTML = `
+    <!-- FEATURED IMAGE (optional) -->
+    ${
+      post.featuredImageUrl
+        ? `<div class="post-card-image"><img src="https://localhost:7011${post.featuredImageUrl}" alt="Featured image for ${post.title}" /></div>`
+        : ""
+    }
+
     <!-- POST CARD HEADER -->
     <div class="post-card-header">
         <div class="post-create-date">${new Date(
@@ -15,14 +22,17 @@ export function createPostCard(post) {
           post.categories[0] ?? "Uncategorized"
         }</div>
     </div>
+
     <!-- POST CARD TITLE -->
     <div class="post-card-title">
         <h3>${post.title}</h3>
     </div>
+
     <!-- POST CARD CONTENT -->
     <div class="post-card-content">
         <p>${getExcerpt(post.body, 100)}...</p>
     </div>
+    
     <!-- POST CARD BUTTONS -->
     <div class="post-card-buttons">
         <div class="edit-delete-links">

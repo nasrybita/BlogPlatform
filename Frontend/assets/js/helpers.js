@@ -6,3 +6,4 @@ export function getExcerpt(html, length = 100) {
   const text = div.textContent || div.innerText || "";
   return text.substring(0, length);
 }
+

@@ -123,7 +123,6 @@ section {
 /* --- DRAFTS BUTTON (variant) --- */
 .drafts-btn {
   background-color: #f2622e;
-
   display: inline-block;
   text-decoration: none;
   color: white;
@@ -190,6 +189,19 @@ section {
   padding: 10px;
   font-weight: 700;
   border-radius: 20px;
+}
+
+/* --- POST CARD IMAGE --- */
+.post-card-image {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.post-card-image img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 5px;
 }
 
 /* --- POST CARD TITLE --- */
