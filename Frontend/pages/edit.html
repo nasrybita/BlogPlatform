@@ -44,6 +44,32 @@
       <input type="hidden" id="postBody" />
       <span class="error-message" id="errorBody"></span>
 
+      <!-------------- Featured Image -------------->
+      <label>Featured Image</label>
+      <div class="featured-image-wrapper">
+        <input
+          type="file"
+          id="featuredImageInput"
+          accept=".jpg,.jpeg,image/jpeg"
+        />
+        <div class="featured-image-preview" id="featuredImagePreviewContainer">
+          <button
+            type="button"
+            id="removeFeaturedImageBtn"
+            class="remove-image-btn"
+            title="Remove image"
+          >
+            ×
+          </button>
+          <img
+            id="featuredImagePreview"
+            alt="Featured image preview"
+            style="display: none"
+          />
+        </div>
+      </div>
+      <span class="error-message" id="errorFeaturedImage"></span>
+
       <!-------------- Post Categories -------------->
       <label>Categories</label>
       <div id="categoriesWrapper" class="input-chip-wrapper">
