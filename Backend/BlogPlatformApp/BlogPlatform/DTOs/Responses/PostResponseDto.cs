@@ -15,5 +15,6 @@ namespace BlogPlatform.DTOs.Responses
         public IEnumerable<string> Categories { get; set; } = Array.Empty<string>();
         public IEnumerable<string> Tags { get; set; } = Array.Empty<string>();
         public long ViewCount { get; set; }
+        public string? FeaturedImageUrl { get; set; }
     }
 }

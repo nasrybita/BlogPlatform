@@ -19,19 +19,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 
-
-//...
-// Add CORS Configuration
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll",
-        p => p.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader());
-});
-
-
-
 //...
 // Add DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -74,7 +61,8 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 
-// CORS configuration
+// ...
+// Add CORS Configuration
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -101,9 +89,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseStaticFiles();
 
-app.UseCors("AllowAll");
+app.UseHttpsRedirection();
 
 app.UseCors("AllowFrontend");
 

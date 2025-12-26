@@ -12,16 +12,18 @@ namespace BlogPlatform.Mappings
         {
             // Post mappings
             CreateMap<Post, PostResponseDto>()
-                .ForMember(dest => dest.Categories, 
+                .ForMember(dest => dest.Categories,
                     opt => opt.MapFrom(src => src.PostCategories != null
-                        ? src.PostCategories.Select(pc => pc.Category != null ? pc.Category.Name : string.Empty )
+                        ? src.PostCategories.Select(pc => pc.Category != null ? pc.Category.Name : string.Empty)
                         : Enumerable.Empty<string>()))
                 .ForMember(dest => dest.Tags,
                     opt => opt.MapFrom(src => src.PostTags != null
                         ? src.PostTags.Select(pt => pt.Tag != null ? pt.Tag.Name : string.Empty)
                         : Enumerable.Empty<string>()))
                 .ForMember(dest => dest.ViewCount,
-                        opt => opt.MapFrom(src => src.ViewCount));
+                        opt => opt.MapFrom(src => src.ViewCount))
+                .ForMember(dest => dest.FeaturedImageUrl,
+                        opt => opt.MapFrom(src => src.FeaturedImageUrl));
 
 
 

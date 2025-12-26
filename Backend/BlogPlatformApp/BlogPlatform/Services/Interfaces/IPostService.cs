@@ -8,8 +8,8 @@ namespace BlogPlatform.Services.Interfaces
     {
         Task<IEnumerable<PostResponseDto>> GetAllAsync();
         Task<PostResponseDto?> GetByIdAsync(int id);
-        Task<PostResponseDto> CreateAsync(PostCreateDto dto);
-        Task<bool> UpdateAsync(int id, PostUpdateDto dto);
+        Task<PostResponseDto> CreateAsync(PostCreateDto dto, string? featuredImageUrl);
+        Task<bool> UpdateAsync(int id, PostUpdateDto dto, string? featuredImageUrl);
         Task<bool> DeleteAsync(int id);
         Task<bool> PublishAsync(int id);
         Task<bool> UnpublishAsync(int id);
