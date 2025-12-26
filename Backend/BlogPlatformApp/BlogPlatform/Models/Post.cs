@@ -32,6 +32,7 @@ namespace BlogPlatform.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
         public long ViewCount { get; set; } = 0;
+        public string? FeaturedImageUrl { get; set; }
 
 
         // Navigation properties

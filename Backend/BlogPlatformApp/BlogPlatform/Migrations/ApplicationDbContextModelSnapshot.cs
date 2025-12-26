@@ -136,6 +136,10 @@ namespace BlogPlatform.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
+                    b.Property<string>("FeaturedImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<string>("Slug")
                         .IsRequired()
                         .HasMaxLength(255)
