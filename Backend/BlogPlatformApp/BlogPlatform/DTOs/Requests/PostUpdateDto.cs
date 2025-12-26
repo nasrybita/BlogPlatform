@@ -8,6 +8,7 @@ namespace BlogPlatform.DTOs.Requests
         public string? Slug { get; set; }
         public string? Body { get; set; }
         public PostStatus? Status { get; set; }
+        public bool RemoveFeaturedImage { get; set; }
         public IEnumerable<string>? Categories { get; set; }
         public IEnumerable<string>? Tags { get; set; }
     }
