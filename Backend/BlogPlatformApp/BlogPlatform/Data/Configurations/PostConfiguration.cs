@@ -57,6 +57,10 @@ namespace BlogPlatform.Data.Configurations
                 .IsRequired();
 
 
+            builder.Property(p => p.FeaturedImageUrl)
+                .HasMaxLength(500)
+                .IsRequired(false);
+
 
             builder.HasIndex(p => p.Slug)
                 .IsUnique();
@@ -86,6 +90,7 @@ namespace BlogPlatform.Data.Configurations
             builder.HasMany(p => p.PostTags)
                 .WithOne(pt => pt.Post)
                 .HasForeignKey(pt => pt.PostId);
+
 
         }
 
