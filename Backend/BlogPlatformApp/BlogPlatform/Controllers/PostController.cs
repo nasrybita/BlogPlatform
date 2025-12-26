@@ -2,6 +2,9 @@
 using BlogPlatform.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace BlogPlatform.Controllers
 {
@@ -10,10 +13,12 @@ namespace BlogPlatform.Controllers
     public class PostController : ControllerBase
     {
         private readonly IPostService _postService;
+        private readonly IWebHostEnvironment _env;
 
-        public PostController(IPostService postService)
+        public PostController(IPostService postService, IWebHostEnvironment env)
         {
             _postService = postService;
+            _env = env;
         }
 
 
@@ -47,9 +52,22 @@ namespace BlogPlatform.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] PostCreateDto dto)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Create([FromForm] PostCreateDto dto, IFormFile? featuredImage)
         {
-            var post = await _postService.CreateAsync(dto);
+
+            string? imageUrl = null;
+
+            try
+            {
+                imageUrl = await SaveFeaturedImageAsync(featuredImage);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
+            var post = await _postService.CreateAsync(dto, imageUrl);
             return CreatedAtAction(nameof(GetById), new { id = post.PostId }, post);
         }
 
@@ -58,15 +76,67 @@ namespace BlogPlatform.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] PostUpdateDto dto)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Update(int id, [FromForm] PostUpdateDto dto, IFormFile? featuredImage)
         {
-            var success = await _postService.UpdateAsync(id, dto);
+            // Get existing post
+            var post = await _postService.GetByIdAsync(id);
+            if (post == null)
+                return NotFound(new { message = "Post not found" });
+
+            string? imageUrl = post.FeaturedImageUrl;
+
+            // -------------------- Handle Featured Image Removal --------------------
+            if (dto.RemoveFeaturedImage)
+            {
+                if (!string.IsNullOrEmpty(post.FeaturedImageUrl))
+                {
+                    var webRootPath = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                    var imagePath = Path.Combine(webRootPath, post.FeaturedImageUrl.TrimStart('/').Replace("/", "\\"));
+
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(imagePath); // Delete the file physically
+                    }
+
+                    imageUrl = null; // Clear the database field
+                }
+            }
+
+            // -------------------- Handle New Featured Image --------------------
+            if (featuredImage != null)
+            {
+                try
+                {
+                    imageUrl = await SaveFeaturedImageAsync(featuredImage);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    return BadRequest(new { message = ex.Message });
+                }
+
+                // If there was a previous image, delete it
+                if (!string.IsNullOrEmpty(post.FeaturedImageUrl))
+                {
+                    var webRootPath = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                    var oldImagePath = Path.Combine(webRootPath, post.FeaturedImageUrl.TrimStart('/').Replace("/", "\\"));
+
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
+            }
+
+            // -------------------- Update Post --------------------
+            var success = await _postService.UpdateAsync(id, dto, imageUrl);
             if (success)
             {
                 return Ok(new { message = "Post updated successfully" });
             }
 
             return NotFound(new { message = "Post not found" });
+
         }
 
 
@@ -116,6 +186,47 @@ namespace BlogPlatform.Controllers
 
             return NoContent();
         }
+
+
+
+        private async Task<string?> SaveFeaturedImageAsync(IFormFile? featuredImage)
+        {
+            if (featuredImage == null || featuredImage.Length == 0)
+            {
+                return null;
+            }
+
+            // Only allow JPEG / JPG
+            if (!string.Equals(featuredImage.ContentType, "image/jpeg", StringComparison.OrdinalIgnoreCase) &&
+                !string.Equals(featuredImage.ContentType, "image/jpg", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException("Only JPEG/JPG images are allowed.");
+            }
+
+            var extension = Path.GetExtension(featuredImage.FileName).ToLowerInvariant();
+            if (extension != ".jpg" && extension != ".jpeg")
+            {
+                throw new InvalidOperationException("Only JPEG/JPG images are allowed.");
+            }
+
+            // Ensure wwwroot/images exists
+            var webRootPath = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            var imagesFolder = Path.Combine(webRootPath, "images");
+            Directory.CreateDirectory(imagesFolder);
+
+            // Generate unique file name
+            var fileName = $"{Guid.NewGuid()}{extension}";
+            var filePath = Path.Combine(imagesFolder, fileName);
+
+            using (var stream = System.IO.File.Create(filePath))
+            {
+                await featuredImage.CopyToAsync(stream);
+            }
+
+            // Return relative URL (will be used by frontend)
+            return $"/images/{fileName}";
+        }
+
 
 
 

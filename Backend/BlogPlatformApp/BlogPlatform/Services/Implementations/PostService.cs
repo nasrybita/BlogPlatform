@@ -62,12 +62,18 @@ namespace BlogPlatform.Services.Implementations
         }
 
 
-        public async Task<PostResponseDto> CreateAsync(PostCreateDto dto)
+        public async Task<PostResponseDto> CreateAsync(PostCreateDto dto, string? featuredImageUrl)
         {
 
             // Map DTO to Post entity
             var post = _mapper.Map<Post>(dto);
 
+
+            // Set featured image URL if provided
+            if (!string.IsNullOrWhiteSpace(featuredImageUrl))
+            {
+                post.FeaturedImageUrl = featuredImageUrl;
+            }
 
             // Sanitize Quill HTML body
             var sanitizer = new HtmlSanitizer();
@@ -196,7 +202,7 @@ namespace BlogPlatform.Services.Implementations
         }
 
 
-        public async Task<bool> UpdateAsync(int id, PostUpdateDto dto)
+        public async Task<bool> UpdateAsync(int id, PostUpdateDto dto, string? featuredImageUrl)
         {
 
             var existing = await _postRepository.GetByIdForUpdateAsync(id);
@@ -207,6 +213,10 @@ namespace BlogPlatform.Services.Implementations
 
 
             _mapper.Map(dto, existing);
+
+
+            // Update featured image URL, allow clearing it
+            existing.FeaturedImageUrl = string.IsNullOrWhiteSpace(featuredImageUrl) ? null : featuredImageUrl;
 
 
 
