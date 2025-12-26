@@ -1,4 +1,4 @@
-import { fetchPostBySlug, deletePostFromAPI } from "./shared-api.js";
+import { fetchPostBySlug, deletePostFromAPI } from "./api.js";
 
 // -------------------- DOM Elements --------------------
 const postTitle = document.getElementById("postTitle");
@@ -31,8 +31,6 @@ function formatDate(dateString) {
     year: "numeric",
     month: "long",
     day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
   };
   return date.toLocaleDateString("en-US", options);
 }
