@@ -1,3 +1,4 @@
+import { markFeaturedImageRemoved } from "./submit.js";
 import {
   titleInput,
   slugInput,
@@ -6,6 +7,11 @@ import {
   categoriesWrapper,
   tagsWrapper,
   statusSelect,
+  featuredImageInput,
+  featuredImagePreview,
+  featuredImagePreviewContainer,
+  errorFeaturedImage,
+  removeFeaturedImageBtn,
 } from "./dom.js";
 import { quill } from "./editor.js";
 import {
@@ -21,12 +27,15 @@ import {
   validateCategories,
   validateTags,
 } from "../create/validators.js";
-import { fetchPostById } from "../shared-api.js";
+import { fetchPostById } from "../api.js";
 import {
   initializeSubmit,
   updateEditButtonText,
   setOriginalPost,
 } from "./submit.js";
+
+let featuredImageRemoved = false;
+
 
 // -------------------- Get Post ID from URL --------------------
 const urlParams = new URLSearchParams(window.location.search);
@@ -37,7 +46,7 @@ async function loadPostForEditing() {
   try {
     const post = await fetchPostById(postId);
 
-    // STORE ORIGINAL POST DATA - THIS IS KEY FOR PROBLEM #1, #2, #3
+    // STORE ORIGINAL POST DATA 
     setOriginalPost(post);
 
     // Populate form fields with existing post data
@@ -46,6 +55,18 @@ async function loadPostForEditing() {
 
     // Set Quill editor content
     quill.root.innerHTML = post.body;
+
+    // Show existing featured image
+    if (post.featuredImageUrl) {
+      featuredImagePreview.src = `https://localhost:7011${post.featuredImageUrl}`;
+      featuredImagePreview.style.display = "block";
+      featuredImagePreviewContainer.style.display = "block";
+      removeFeaturedImageBtn.style.display = "flex";
+    } else {
+      featuredImagePreview.style.display = "none";
+      featuredImagePreviewContainer.style.display = "none";
+      removeFeaturedImageBtn.style.display = "none";
+    }
 
     // Populate categories
     if (post.categories && post.categories.length > 0) {
@@ -108,5 +129,54 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 
   // -------------------- Initialize Submit Handler --------------------
-  initializeSubmit(postId);
+  initializeSubmit(postId, featuredImageRemoved);
+
+  // Featured Image Preview 
+  featuredImageInput.addEventListener("change", () => {
+    errorFeaturedImage.textContent = "";
+
+    const file = featuredImageInput.files[0];
+    if (!file) {
+      // If user clears file, keep showing existing image (do nothing)
+      return;
+    }
+
+    const isJpeg =
+      file.type === "image/jpeg" ||
+      file.type === "image/jpg" ||
+      file.name.toLowerCase().endsWith(".jpg") ||
+      file.name.toLowerCase().endsWith(".jpeg");
+
+    if (!isJpeg) {
+      featuredImageInput.value = "";
+      errorFeaturedImage.textContent = "Only JPEG/JPG images are allowed.";
+      return;
+    }
+
+    const maxSizeBytes = 1 * 1024 * 1024; // 1 MB
+    if (file.size > maxSizeBytes) {
+      featuredImageInput.value = "";
+      errorFeaturedImage.textContent = "Image must be smaller than 1 MB.";
+      return;
+    }
+
+    const url = URL.createObjectURL(file);
+    featuredImagePreview.src = url;
+    featuredImagePreview.style.display = "block";
+  });
+
+  // Remove Featured Image Button Handler 
+  removeFeaturedImageBtn.addEventListener("click", () => {
+    markFeaturedImageRemoved(); // important
+    featuredImageRemoved = true;
+
+    featuredImagePreview.src = "";
+    featuredImagePreview.style.display = "none";
+    featuredImagePreviewContainer.style.display = "none";
+
+    featuredImageInput.value = "";
+    removeFeaturedImageBtn.style.display = "none";
+  });
 });
+
+export { featuredImageRemoved };

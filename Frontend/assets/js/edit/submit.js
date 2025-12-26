@@ -1,5 +1,11 @@
-import { titleInput, slugInput, statusSelect } from "../create/dom.js";
-import { quill } from "../create/editor.js";
+import {
+  titleInput,
+  slugInput,
+  statusSelect,
+  submitBtn,
+  featuredImageInput,
+} from "./dom.js";
+import { quill } from "./editor.js";
 import { categories, tags } from "../create/chips.js";
 import {
   clearErrors,
@@ -12,19 +18,22 @@ import {
   validateStatus,
 } from "../create/validators.js";
 import {
-  fetchPostById,
-  updatePostToAPI,
+  updatePostFormToAPI,
   publishPostToAPI,
   unpublishPostToAPI,
-} from "../shared-api.js";
+} from "../api.js";
 
 // Store original post data to track status changes
 let originalPost = null;
+// Store featured image removal state
+let featuredImageRemoved = false;
 
 // -------------------- Update Edit Button Text Based on Status --------------------
 export function updateEditButtonText() {
-  const submitBtn = document.getElementById("submitPostBtn");
-  if (!originalPost) return;
+  // If the original post has not been loaded yet, stop and do nothing.
+  if (!originalPost) {
+    return;
+  }
 
   const currentStatus = statusSelect.value;
   const originalStatus = originalPost.status;
@@ -49,8 +58,8 @@ export function updateEditButtonText() {
 }
 
 // -------------------- Submit Post --------------------
-export function initializeSubmit(postId) {
-  const submitBtn = document.getElementById("submitPostBtn");
+export function initializeSubmit(postId, featuredImageRemovedFlag) {
+  featuredImageRemoved = featuredImageRemovedFlag;
 
   submitBtn.addEventListener("click", async () => {
     clearErrors();
@@ -71,6 +80,9 @@ export function initializeSubmit(postId) {
     const tagsChanged =
       JSON.stringify(tags.sort()) !== JSON.stringify(originalPost.tags.sort());
 
+    const featuredImageChanged =
+      featuredImageInput.files.length > 0 || featuredImageRemoved;
+
     // If nothing changed, just redirect without showing toast
     if (
       !titleChanged &&
@@ -78,20 +90,12 @@ export function initializeSubmit(postId) {
       !bodyChanged &&
       !categoriesChanged &&
       !tagsChanged &&
-      !statusChanged
+      !statusChanged &&
+      !featuredImageChanged
     ) {
       window.location.href = "../index.html";
       return;
     }
-
-    const dto = {
-      title: titleInput.value.trim(),
-      slug: slugInput.value.trim(),
-      body: quill.root.innerHTML.trim(),
-      categories: [...categories],
-      tags: [...tags],
-      status: newStatus,
-    };
 
     const invalid =
       !validateTitle() |
@@ -107,8 +111,25 @@ export function initializeSubmit(postId) {
       submitBtn.disabled = true;
       submitBtn.textContent = "Updating...";
 
+      // Build FormData for multipart/form-data
+      const formData = new FormData();
+      formData.append("Title", titleInput.value.trim());
+      formData.append("Slug", slugInput.value.trim());
+      formData.append("Body", quill.root.innerHTML.trim());
+      formData.append("Status", newStatus);
+
+      categories.forEach((cat) => formData.append("Categories", cat));
+      tags.forEach((tag) => formData.append("Tags", tag));
+
+      // featured image logic
+      if (featuredImageRemoved) {
+        formData.append("RemoveFeaturedImage", "true");
+      } else if (featuredImageInput.files.length > 0) {
+        formData.append("FeaturedImage", featuredImageInput.files[0]);
+      }
+
       // Step 1: Update post fields
-      const { res, data } = await updatePostToAPI(postId, dto);
+      const { res, data } = await updatePostFormToAPI(postId, formData);
 
       if (!res.ok) {
         submitBtn.disabled = false;
@@ -231,4 +252,9 @@ export function initializeSubmit(postId) {
 // Export originalPost so main.js can set it
 export function setOriginalPost(post) {
   originalPost = post;
+}
+
+// Export featured image removal state
+export function markFeaturedImageRemoved() {
+  featuredImageRemoved = true;
 }
